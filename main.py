@@ -49,7 +49,7 @@ df
 
 # calc the correlation and keep the top feat that higher than 30%
 corr_data = df.corr()
-top_feature = corr_data.index[abs(corr_data['Income ']) > 0.3]
+top_feature = corr_data.index[abs(corr_data['Income ']) > 0.05]
 plt.subplots(figsize=(12,8))
 top_corr = df[top_feature].corr()
 sns.heatmap(top_corr,annot=True)
