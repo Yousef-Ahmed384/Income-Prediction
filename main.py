@@ -75,3 +75,34 @@ x_val_scaled = scalar.transform(x_val)
 x_train_scaled = pd.DataFrame(x_train_scaled,columns=x_train.columns)
 x_val_scaled = pd.DataFrame(x_val_scaled,columns=x_val.columns)
 
+# Preprocessing of Test data
+test_df = pd.read_csv("test_data.csv", na_values=['?'], skipinitialspace=True)
+print(test_df.duplicated().sum())
+test_df = test_df.drop_duplicates()
+test_df = test_df.drop(columns="education")
+
+mask = test_df.isnull().any(axis=1)
+print(mask.sum() / len(test_df))
+print("Number of rows before dropping null:",len(test_df))
+test_df = test_df.dropna()
+print("Number of rows after dropping null:",len(test_df))
+# droping 7.5% from my data was vary columns not only one column or biased one
+
+test_df.columns
+test_df = pd.get_dummies(test_df, columns=['workclass', 'occupation', 'race',"marital-status","native-country","relationship"],dtype=int)
+test_df.head()
+
+test_income_dict = { '>50K.' : 1,'<=50K.' :0}
+test_df['sex'] = test_df['sex'].replace(sex_dict)
+test_df['Income '] = test_df['Income '].replace(test_income_dict)
+
+#feature scalling for fnlwgt
+test_df['fnlwgt'] = test_df['fnlwgt'].clip(lower=lowerBound, upper=upperBound)
+
+#to ensure that the training data & test data have the same number of columns
+test_input_all = test_df.reindex(columns=top_feature, fill_value=0)
+
+x_test = test_input_all.drop(columns="Income ", errors='ignore')
+y_test = test_df['Income ']
+x_test_scaled = scalar.transform(x_test)
+x_test_scaled = pd.DataFrame(x_test_scaled, columns=x_test.columns)
