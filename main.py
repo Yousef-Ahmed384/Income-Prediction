@@ -106,3 +106,40 @@ x_test = test_input_all.drop(columns="Income ", errors='ignore')
 y_test = test_df['Income ']
 x_test_scaled = scalar.transform(x_test)
 x_test_scaled = pd.DataFrame(x_test_scaled, columns=x_test.columns)
+
+# D_Tree
+
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.metrics import accuracy_score
+%matplotlib inline
+
+max_depth = range(1,10)
+train_acc_values = []
+val_acc_values = []
+
+for depth in max_depth :
+  model = DecisionTreeClassifier(max_depth= depth, criterion= 'entropy', random_state= 2)
+  model.fit(x_train_scaled, y_train)
+  y_pred_train = model.predict(x_train_scaled)
+  y_pred_val = model.predict(x_val_scaled)
+  train_acc_values.append(accuracy_score(y_train, y_pred_train))
+  val_acc_values.append(accuracy_score(y_val, y_pred_val))
+
+plt.plot(max_depth, train_acc_values, label="acc train")
+plt.plot(max_depth, val_acc_values, label="acc val")
+plt.legend()
+plt.grid()
+plt.xlabel('max depth')
+plt.ylabel('accuracy')
+plt.title('max depth effect on accuracy ')
+plt.show()
+
+best_model = DecisionTreeClassifier(max_depth= 8, criterion= 'entropy', random_state= 2)
+best_model.fit(x_train_scaled, y_train)
+
+test_acc = accuracy_score(y_test, best_model.predict(x_test_scaled))
+print("Test accuracy:", test_acc)
+
+plt.figure(figsize=(15,10))
+plot_tree(best_model, filled=True, feature_names=[f"Feature {i}" for i in range(x_train_scaled.shape[1])], class_names=['<=50K', '>50K'], rounded = True)
+plt.show()
