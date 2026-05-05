@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Income-Prediction
 FCIS ML Project in AI Course that Classify based on prediction the income of Employees based on some Features.
 =======
@@ -84,5 +83,3 @@ To know if our models are actually good, we used these tools:
   * *Recall:* Out of all the people who actually make >50K, how many did the model find?
   * *F1-Score:* A balanced average of Precision and Recall.
 * **Confusion Matrix:** A heat-map visualization showing the exact number of True Positives, True Negatives, False Positives, and False Negatives.
-
->>>>>>> 211f9ad (init commit)
