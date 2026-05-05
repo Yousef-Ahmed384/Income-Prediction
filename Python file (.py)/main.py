@@ -260,8 +260,8 @@ rf = RandomForestClassifier()
 
 # the grind that contains different values for 3 parameters
 param_grid = {
-    'n_estimators': [ 200 , 250 , 300 ],
-    'max_depth': [ 8, 9 ,13 ,15 , 17],
+    'n_estimators': [ 150 ,200 , 250 ],
+    'max_depth': [ 2, 4 ,6 , 8 , 9 ],
     'criterion': ['gini', 'entropy']
 }
 
@@ -278,12 +278,12 @@ grid = grid.fit(x_train_scaled,y_train)
 
 grid.best_params_
 
-"""**then the best value for each parameter is (Criterion = Entropy , Max Depth = 8 , n_estimators(number of decision trees) = 200)**
+"""**then the best value for each parameter is (Criterion = gini , Max Depth = 9 , n_estimators(number of decision trees) = 250)**
 
 Training the model using these **values**
 """
 
-rf_best = RandomForestClassifier(criterion = 'gini' , max_depth = 17 , n_estimators = 250  )
+rf_best = RandomForestClassifier(criterion = 'gini' , max_depth = 9 , n_estimators = 250  )
 
 # training the model
 rf_best.fit(x_train_scaled,y_train)
@@ -293,21 +293,8 @@ y_pred_train_rf = rf_best.predict(x_train_scaled)
 y_pred_val_rf = rf_best.predict(x_val_scaled)
 
 # printing accuracy scores
-print(accuracy_score(y_train,y_pred_train_rf))
-print(accuracy_score(y_val,y_pred_val_rf))
-
-# rf_best = RandomForestClassifier(criterion = 'gini' , max_depth = 9 , n_estimators = 200  )
-
-# # training the model
-# rf_best.fit(x_train_scaled,y_train)
-
-# # validation proccess
-# y_pred_train_rf = rf_best.predict(x_train_scaled)
-# y_pred_val_rf = rf_best.predict(x_val_scaled)
-
-# # printing accuracy scores
-# print(accuracy_score(y_train,y_pred_train_rf))
-# print(accuracy_score(y_val,y_pred_val_rf))
+print("Train accuracy score:",accuracy_score(y_train,y_pred_train_rf))
+print("Validation accuracy score:",accuracy_score(y_val,y_pred_val_rf))
 
 """Confusion matrix and report for the validation proccess"""
 
@@ -332,6 +319,31 @@ report_rf_test = classification_report(y_test,y_pred_test_rf)
 print("Test Score:", accuracy_score(y_test,y_pred_test_rf))
 print("Test Confusion Matrix:\n", conf_m_rf_test)
 print("Test Classification Report:\n", report_rf_test)
+
+"""Trying different values for max_depth"""
+
+max_depth = [1,3,5,7,9,11,13,15,17]
+train_acc_values_rf = []
+val_acc_values_rf = []
+for depth in max_depth :
+  rf_model = RandomForestClassifier(criterion = 'gini' , max_depth = depth , n_estimators = 250  )
+  rf_model.fit(x_train_scaled, y_train)
+  y_pred_train = rf_model.predict(x_train_scaled)
+  y_pred_val = rf_model.predict(x_val_scaled)
+  train_acc_values_rf.append(accuracy_score(y_train, y_pred_train))
+  val_acc_values_rf.append(accuracy_score(y_val, y_pred_val))
+
+  """ Drawing the results as a figure """
+plt.figure().set_figwidth(17)
+plt.plot(max_depth, train_acc_values_rf, label = "acc train")
+plt.plot(max_depth, val_acc_values_rf, label = "acc val")
+plt.legend()
+plt.grid()
+plt.xlabel('max depth')
+plt.ylabel('accuracy')
+plt.title('max depth effect on accuracy ')
+plt.show()
+
 
 """### Logostic Regression"""
 
