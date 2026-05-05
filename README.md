@@ -31,7 +31,7 @@ Before feeding data to an AI model, it must be cleaned and formatted. Think of t
 * **Feature Scaling (`StandardScaler`):**
   * **What it is:** It shrinks all numerical columns so they share the same scale (mean of 0).
   * **How we used it:** We used `.fit()` on the training data to learn the rules, and `.transform()` on the train, validation, and test sets to apply the rules. This prevents "Data Leakage" (cheating by looking at the test test before the exam).
-  
+
 * **Test Data Alignment:**
   * We used `.reindex()` on the test dataset to ensure it had the exact same columns as the training dataset.
 
