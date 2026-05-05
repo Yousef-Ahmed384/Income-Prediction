@@ -1,6 +1,8 @@
 # Income-Prediction
 FCIS ML Project in AI Course that Classify based on prediction the income of Employees based on some Features.
-=======
+
+---
+
 # 📊 Adult Income Prediction: End-to-End Machine Learning Project
 
 Welcome to the documentation for the **Income Prediction Project**. This project aims to build a machine learning pipeline that predicts whether an individual earns more than $50,000 a year based on census data (like age, occupation, and education). 
@@ -9,21 +11,27 @@ This README provides a clear, step-by-step explanation of the data preprocessing
 
 ---
 
+
 ## 🧹 1. Data Preprocessing & Techniques
 
 Before feeding data to an AI model, it must be cleaned and formatted. Think of this as preparing the ingredients before cooking. Here are the steps and techniques we used:
 
 * **Handling Missing Values & Duplicates:** * We identified missing values marked as `?` and dropped them because they accounted for a small percentage (about 7.5%) of the data. We also removed duplicate rows to prevent the model from learning redundant patterns.
   * *Redundancy check:* We dropped the `education` column because the `education-num` column provides the exact same information but in a more model-friendly numerical format.
+
 * **Encoding Categorical Data:** Machine learning models only understand numbers, not text.
   * **One-Hot Encoding (`pd.get_dummies`):** Used for categories without a specific order (like `workclass`, `occupation`, `race`). It creates a new binary (0 or 1) column for each category.
   * **Binary Mapping:** For columns with only two options, we mapped them manually using dictionaries (e.g., `Male: 1, Female: 0` and `>50K: 1, <=50K: 0`).
+
 * **Outlier Handling (Winsorizing/Clipping):** * We calculated the **Interquartile Range (IQR)** for the `fnlwgt` (final weight) column. Extreme values (too high or too low) were "clipped" to a maximum and minimum boundary. This prevents wild outliers from confusing the models.
+
 * **Feature Selection (Correlation):**
   * We calculated how strongly each feature relates to the `Income` target. We kept only the "Top Features" that had an absolute correlation greater than `0.05`. This removes noisy, unhelpful data.
+
 * **Feature Scaling (`StandardScaler`):**
   * **What it is:** It shrinks all numerical columns so they share the same scale (mean of 0).
   * **How we used it:** We used `.fit()` on the training data to learn the rules, and `.transform()` on the train, validation, and test sets to apply the rules. This prevents "Data Leakage" (cheating by looking at the test test before the exam).
+  
 * **Test Data Alignment:**
   * We used `.reindex()` on the test dataset to ensure it had the exact same columns as the training dataset.
 
