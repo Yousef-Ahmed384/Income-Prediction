@@ -23,7 +23,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 # %matplotlib inline
 
-dataFrame=pd.read_csv("../train_data.csv",na_values=['?'],skipinitialspace=[True])
+dataFrame=pd.read_csv("train_data.csv",na_values=['?'],skipinitialspace=[True])
 dataFrame.head(30)
 print(dataFrame.duplicated().sum())
 df_no_duplicates = dataFrame.drop_duplicates()
@@ -103,7 +103,7 @@ x_train_scaled
 
 """## Test Data Preprocessing"""
 
-test_df = pd.read_csv("../test_data.csv", na_values=['?'], skipinitialspace=True)
+test_df = pd.read_csv("test_data.csv", na_values=['?'], skipinitialspace=True)
 print("Number of duplicated rows in test data:",test_df.duplicated().sum())
 test_df = test_df.drop_duplicates()
 test_df = test_df.drop(columns="education")
@@ -320,7 +320,10 @@ print("Test Score:", accuracy_score(y_test,y_pred_test_rf))
 print("Test Confusion Matrix:\n", conf_m_rf_test)
 print("Test Classification Report:\n", report_rf_test)
 
-"""Trying different values for max_depth"""
+"""After trying different values for each hyperParametr we found that max_depth is the most effective hyperParameter
+
+Trying different values for max_depth
+"""
 
 max_depth = [1,3,5,7,9,11,13,15,17]
 train_acc_values_rf = []
@@ -333,7 +336,8 @@ for depth in max_depth :
   train_acc_values_rf.append(accuracy_score(y_train, y_pred_train))
   val_acc_values_rf.append(accuracy_score(y_val, y_pred_val))
 
-  """ Drawing the results as a figure """
+"""Drawing the results as a figure"""
+
 plt.figure().set_figwidth(17)
 plt.plot(max_depth, train_acc_values_rf, label = "acc train")
 plt.plot(max_depth, val_acc_values_rf, label = "acc val")
@@ -344,12 +348,15 @@ plt.ylabel('accuracy')
 plt.title('max depth effect on accuracy ')
 plt.show()
 
-
 """### Logostic Regression"""
 
 # create a model train model & try C (0.001,0.01,0.1,1,10,100)
 model = LogisticRegression(solver='liblinear', C=10 ,random_state=0)
 model.fit(x_train_scaled,y_train)
+#                    ( solver = liblinear )
+# c = 100 Accurecy -->85 // c = 10 Accurecy --> 85
+# c = 1 Accurecy -->85 // c = .1 Accurecy --> 85
+# c = .01 Accurecy -->85 // c = .001 Accurecy --> 84
 
 
 #evaluate the model on the validation set
