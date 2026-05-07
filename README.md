@@ -16,7 +16,7 @@ This README provides a clear, step-by-step explanation of the data preprocessing
 
 Before feeding data to an AI model, it must be cleaned and formatted. Think of this as preparing the ingredients before cooking. Here are the steps and techniques we used:
 
-* **Handling Missing Values & Duplicates:** * We identified missing values marked as `?` and dropped them because they accounted for a small percentage (about 7.5%) of the data. We also removed duplicate rows to prevent the model from learning redundant patterns.
+* **Handling Missing Values & Duplicates:**  We identified missing values marked as `?` and dropped them because they accounted for a small percentage (about 7.5%) of the data. We also removed duplicate rows to prevent the model from learning redundant patterns.
   * *Redundancy check:* We dropped the `education` column because the `education-num` column provides the exact same information but in a more model-friendly numerical format.
 
 * **Encoding Categorical Data:** Machine learning models only understand numbers, not text.
